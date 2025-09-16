@@ -32,3 +32,4 @@ A personal web application designed to help users track and visualize their dail
 2.  Install dependencies with `npm install`.
 3.  Set up your own Firebase project and add your `firebaseConfig` keys to a `firebase/config.js` file.
 4.  Run the development server with `npm run dev`.
+## Deployed with Vercel!
