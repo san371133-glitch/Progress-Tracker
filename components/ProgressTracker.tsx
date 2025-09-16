@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, TrendingUp, Target, BookOpen, Award, ChevronRight, ChevronLeft } from 'lucide-react';
-import { db } from '../firebase/config'; // Import the database connection
+import { db } from '@/firebase/config'; // Import the database connection
 import { collection, onSnapshot, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore'; // Import Firestore functions
 
 const ProgressTracker = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState<any[]>([]);
 
   const [showAddSkill, setShowAddSkill] = useState(false);
   const [showAddEntry, setShowAddEntry] = useState(false);
