@@ -70,9 +70,8 @@ const ProgressTracker = () => {
     }
   };
   
-  // The rest of the component's helper functions and JSX
+  // Helper functions to calculate progress
   const getTotalHours = (skill: Skill) => (skill.entries || []).reduce((total, entry) => total + parseFloat(entry.hours || 0), 0);
-
   const getWeekProgress = (skill: Skill) => {
     const weekEntries = (skill.entries || []).filter(entry => {
       const entryDate = new Date(entry.date);
@@ -82,7 +81,6 @@ const ProgressTracker = () => {
     });
     return weekEntries.reduce((total, entry) => total + parseFloat(entry.hours || 0), 0);
   };
-
   const getDayEntries = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0];
     const dayEntries: any[] = [];
@@ -92,17 +90,12 @@ const ProgressTracker = () => {
     });
     return dayEntries;
   };
-
   const getDayTotalHours = (date: Date) => getDayEntries(date).reduce((total, entry) => total + parseFloat(entry.hours || 0), 0);
-
   const generateCalendarDays = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-    const days = [];
+    const year = currentDate.getFullYear(); const month = currentDate.getMonth();
+    const firstDay = new Date(year, month, 1); const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate(); const startingDayOfWeek = firstDay.getDay();
+    const days: { date: Date, isCurrentMonth: boolean }[] = [];
     const prevMonth = new Date(year, month - 1, 0);
     for (let i = startingDayOfWeek - 1; i >= 0; i--) { days.push({ date: new Date(year, month - 1, prevMonth.getDate() - i), isCurrentMonth: false }); }
     for (let day = 1; day <= daysInMonth; day++) { days.push({ date: new Date(year, month, day), isCurrentMonth: true }); }
@@ -110,25 +103,13 @@ const ProgressTracker = () => {
     for (let day = 1; day <= remainingDays; day++) { days.push({ date: new Date(year, month + 1, day), isCurrentMonth: false }); }
     return days;
   };
-
-  const navigateMonth = (direction: number) => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(currentDate.getMonth() + direction);
-    setCurrentDate(newDate);
-  };
-
-  const isToday = (date: Date) => {
-    const today = new Date();
-    return date.toDateString() === today.toDateString();
-  };
-
+  const navigateMonth = (direction: number) => { const newDate = new Date(currentDate); newDate.setMonth(currentDate.getMonth() + direction); setCurrentDate(newDate); };
+  const isToday = (date: Date) => new Date().toDateString() === date.toDateString();
   const TabButton = ({ id, icon: Icon, label, isActive, onClick }: { id: string, icon: React.ElementType, label: string, isActive: boolean, onClick: (id: string) => void }) => ( <button onClick={() => onClick(id)} className={`flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 ${ isActive ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transform scale-105' : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-blue-600 border border-gray-200' }`}><Icon size={20} /><span>{label}</span></button> );
-
   const SkillCard = ({ skill, onClick }: { skill: Skill, onClick: (skill: Skill) => void }) => ( <div onClick={() => onClick(skill)} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:transform hover:scale-105"><div className="flex items-center justify-between mb-4"><div className="flex items-center gap-3"><div className={`w-4 h-4 rounded-full ${skill.color}`}></div><h3 className="font-bold text-lg text-gray-800">{skill.name}</h3></div><span className="text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{skill.category}</span></div><div className="space-y-3"><div className="flex justify-between items-center"><span className="text-sm text-gray-600">Total Hours</span><span className="font-bold text-xl text-gray-800">{getTotalHours(skill).toFixed(1)}h</span></div><div className="flex justify-between items-center"><span className="text-sm text-gray-600">This Week</span><span className="font-semibold text-green-600">{getWeekProgress(skill).toFixed(1)}h</span></div><div className="bg-gray-200 rounded-full h-2 overflow-hidden"><div className={`h-full ${skill.color} transition-all duration-500`} style={{ width: `${Math.min((getTotalHours(skill) / (skill.targetHours * 10)) * 100, 100)}%` }}></div></div><div className="text-xs text-gray-500 text-center">Target: {skill.targetHours}h/day</div></div></div> );
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* The rest of your JSX code for rendering the component */}
       <div className="bg-white shadow-sm border-b border-gray-200"><div className="max-w-6xl mx-auto px-6 py-6"><div className="flex items-center justify-between"><div><h1 className="text-3xl font-bold text-gray-800 mb-2">Daily Progress Tracker</h1><p className="text-gray-600">Track your learning journey and celebrate your growth</p></div><div className="text-right"><div className="text-2xl font-bold text-blue-600">{new Date().toLocaleDateString()}</div><div className="text-sm text-gray-500">Today</div></div></div></div></div>
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex gap-4 mb-8 overflow-x-auto pb-2"><TabButton id="overview" icon={Target} label="Overview" isActive={activeTab === 'overview'} onClick={setActiveTab} /><TabButton id="skills" icon={BookOpen} label="Skills" isActive={activeTab === 'skills'} onClick={setActiveTab} /><TabButton id="progress" icon={TrendingUp} label="Progress" isActive={activeTab === 'progress'} onClick={setActiveTab} /><TabButton id="calendar" icon={Calendar} label="Calendar" isActive={activeTab === 'calendar'} onClick={setActiveTab} /></div>
