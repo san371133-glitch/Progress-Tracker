@@ -1,4 +1,20 @@
 "use client";
+// Add these interfaces right below "use client";
+interface Entry {
+  id: number;
+  date: string;
+  hours: string;
+  notes: string;
+}
+
+interface Skill {
+  id: string;
+  name: string;
+  category: string;
+  targetHours: number;
+  color: string;
+  entries: Entry[];
+}
 
 import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, TrendingUp, Target, BookOpen, Award, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -7,11 +23,11 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, arrayUnion } from 'fire
 
 const ProgressTracker = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
 
   const [showAddSkill, setShowAddSkill] = useState(false);
   const [showAddEntry, setShowAddEntry] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [newSkill, setNewSkill] = useState({ name: '', category: '', targetHours: 1, color: 'bg-blue-500' });
   const [newEntry, setNewEntry] = useState({ hours: '', notes: '', date: new Date().toISOString().split('T')[0] });
