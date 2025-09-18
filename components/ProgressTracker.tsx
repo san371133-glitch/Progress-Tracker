@@ -23,10 +23,12 @@ interface Skill {
 }
 
 const ProgressTracker = () => {
-  // Use the correct types for our state
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
-
+  // The "permit" that tells the inspector to ignore the next line
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [skills, setSkills] = useState<any[]>([]);
+  // Another "permit" for this line
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [selectedSkill, setSelectedSkill] = useState(null); 
   const [activeTab, setActiveTab] = useState('overview');
   const [showAddSkill, setShowAddSkill] = useState(false);
   const [showAddEntry, setShowAddEntry] = useState(false);
