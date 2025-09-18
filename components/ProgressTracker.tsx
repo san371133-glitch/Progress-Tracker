@@ -23,11 +23,9 @@ interface Skill {
 }
 
 const ProgressTracker = () => {
-  // The "permit" that tells the inspector to ignore the next line
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [skills, setSkills] = useState<any[]>([]);
-  // Another "permit" for this line
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedSkill, setSelectedSkill] = useState(null); 
   const [activeTab, setActiveTab] = useState('overview');
   const [showAddSkill, setShowAddSkill] = useState(false);
